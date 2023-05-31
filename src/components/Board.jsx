@@ -50,7 +50,7 @@ export default function Board() {
   const timeout = useRef(null);
 
   const matchCardArr = useMemo(() => cardArr, [cardArr]);
-  const onCheckCardMatching = useCallback(() => {
+  const onCheckCardMatching = () => {
     if (matchCardArr.length === 2) {
       const [card_1, card_2] = matchCardArr;
       if (card_1.card === card_2.card) {
@@ -68,10 +68,11 @@ export default function Board() {
         setCardArr([]);
       }, 500);
     }
-  }, [cardArr]);
+  };
 
   useEffect(() => {
     onCheckCardMatching();
+    return () => clearTimeout(timeout.current);
   }, [matchCardArr]);
 
   const onClick = (cardObj) => {
