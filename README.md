@@ -16,3 +16,7 @@
 1. git clone을 하여 내려받은 후,
 2. npm install 명령어를 터미널에 친다. 
 3. npm run start 명령어로 화면을 띄운다. 
+
+
+https://github.com/heywon0909/match-picture-game/assets/50330312/8e96b171-1ec6-4360-809f-15bf1750141e
+
