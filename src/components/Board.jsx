@@ -49,10 +49,9 @@ export default function Board() {
   const [result, setResult] = useState("짝을 맞춰주세요");
   const timeout = useRef(null);
 
-  const matchCardArr = useMemo(() => cardArr, [cardArr]);
   const onCheckCardMatching = () => {
-    if (matchCardArr.length === 2) {
-      const [card_1, card_2] = matchCardArr;
+    if (cardArr.length === 2) {
+      const [card_1, card_2] = cardArr;
       if (card_1.card === card_2.card) {
         console.log("맞았습니다.");
         setBoardArr((prevArr) => {
@@ -73,14 +72,14 @@ export default function Board() {
   useEffect(() => {
     onCheckCardMatching();
     return () => clearTimeout(timeout.current);
-  }, [matchCardArr]);
+  }, [cardArr]);
 
   const onClick = (cardObj) => {
     // 1. matchArr의 길이가 2를 넘어가면 에러 던져주기
     // 2. matchArr 의 길이가 2가 되면 두 객체의 item 값 비교
     // 3. 맞으면 board 배열에서 제외
 
-    if (matchCardArr.length === 2) return;
+    if (cardArr.length === 2) return;
     setCardArr((prevCardArr) => [...prevCardArr, cardObj]);
   };
   const isMatchCard = (card, row, col) => {
@@ -89,7 +88,6 @@ export default function Board() {
     )?.length > 0
       ? true
       : false;
-    return false;
   };
   return (
     <div className="w-full p-2 grid grid-rows-4 grid-flow-col md:gap-2 gap-4 place-content-center">
