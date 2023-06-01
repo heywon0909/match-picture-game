@@ -7,6 +7,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import GameStart from "./pages/GameStart";
+import GameLevelSelect from "./pages/GameLevelSelect";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, path: "/", element: <Home /> },
+      { path: "/game/select", element: <GameLevelSelect /> },
       { path: "/game/start", element: <GameStart /> },
     ],
   },

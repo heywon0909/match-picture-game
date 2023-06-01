@@ -24,7 +24,7 @@ export default function Home() {
             E
           </h1>
         </div>
-        <Link to="/game/start">
+        <Link to="/game/select">
           <div className="flex relative top-8 grayscale-0">
             <button className="w-64 h-10 bg-white  font-extrabold text-2xl rounded-md animate-bounce">
               <p className="text-blue-700 hover:text-indigo-300">start</p>

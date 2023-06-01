@@ -79,8 +79,10 @@ export default function Board() {
     // 2. matchArr 의 길이가 2가 되면 두 객체의 item 값 비교
     // 3. 맞으면 board 배열에서 제외
 
-    if (cardArr.length === 2) return;
-    setCardArr((prevCardArr) => [...prevCardArr, cardObj]);
+    setCardArr((prevCardArr) => {
+      if (prevCardArr.length === 2) return [...prevCardArr];
+      else return [...prevCardArr, cardObj];
+    });
   };
   const isMatchCard = (card, row, col) => {
     return Object.values(cardArr).filter(
