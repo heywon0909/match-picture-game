@@ -8,7 +8,7 @@ const CardItem = memo(({ card, row, col, onClick, isMatch }) => {
     if (card == null)
       return "w-28 h-32 bg-brand flex flex-col justify-center items-center";
     if (isMatch)
-      return "w-28 h-32 bg-slate-50 flex flex-col justify-center items-center border-4 border-blue-400 shadow-indigo-500/40";
+      return "w-28 h-32 bg-slate-50 flex flex-col justify-center items-center border-4 border-blue-800 shadow-indigo-500/40";
     if (!isMatch)
       return "w-28 h-32 bg-slate-50 flex flex-col justify-center items-center hover:border-4 hover:border-blue-400";
   };
