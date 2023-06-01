@@ -25,9 +25,9 @@ export default function Home() {
           </h1>
         </div>
         <Link to="/game/start">
-          <div className="flex relative top-8">
-            <button className="w-64 h-10 bg-white text-red-500 font-extrabold text-2xl rounded-md animate-bounce">
-              start
+          <div className="flex relative top-8 grayscale-0">
+            <button className="w-64 h-10 bg-white  font-extrabold text-2xl rounded-md animate-bounce">
+              <p className="text-red-400">start</p>
             </button>
           </div>
         </Link>
