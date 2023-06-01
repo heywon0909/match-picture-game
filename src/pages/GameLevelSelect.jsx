@@ -19,7 +19,7 @@ export default function GameLevelSelect() {
       }}
     >
       <div className="flex flex-col w-full justify-center items-center">
-        <div className="text-gray-800 text-xl font-semibold p-2 animate-pulse -mt-7">
+        <div className="text-purple-300 text-xl font-semibold p-2 animate-pulse -mt-7">
           <h2>레벨을 골라주세요</h2>
         </div>
         <div className="flex flex-col space-y-10">
