@@ -27,7 +27,7 @@ export default function Home() {
         <Link to="/game/start">
           <div className="flex relative top-8 grayscale-0">
             <button className="w-64 h-10 bg-white  font-extrabold text-2xl rounded-md animate-bounce">
-              <p className="text-red-400">start</p>
+              <p className="text-blue-700 hover:text-indigo-300">start</p>
             </button>
           </div>
         </Link>
