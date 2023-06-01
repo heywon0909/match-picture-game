@@ -62,7 +62,7 @@ export default function Board() {
   const onCheckCardMatching = () => {
     if (cardArr.length === 2) {
       const [card_1, card_2] = cardArr;
-      if (card_1.card === card_2.card) {
+      if (card_1.card === card_2.card && (card_1.row !== card_2.row || card_1.col !== card_2.col)) {
         console.log("맞았습니다.");
         setBoardArr((prevArr) => {
           const newBoardArr = [...prevArr];
