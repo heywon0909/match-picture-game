@@ -10,16 +10,16 @@ export default function GameOver() {
     >
       <div className="flex flex-col w-full justify-center items-center">
         <div className="flex space-x-6">
-          <h1 className="text-8xl text-pink-500 font-extrabold tracking-widest">
+          <h1 className="text-8xl text-pink-500 font-extrabold tracking-widest animate-bounce">
             L
           </h1>
-          <h1 className="text-8xl text-pink-500 font-extrabold tracking-widest">
+          <h1 className="text-8xl text-pink-500 font-extrabold tracking-widest animate-bounce">
             O
           </h1>
-          <h1 className="text-8xl text-pink-500 font-extrabold tracking-widest">
+          <h1 className="text-8xl text-pink-500 font-extrabold tracking-widest animate-bounce">
             S
           </h1>
-          <h1 className="text-8xl text-pink-500 font-extrabold tracking-widest">
+          <h1 className="text-8xl text-pink-500 font-extrabold tracking-widest animate-bounce">
             E
           </h1>
         </div>
