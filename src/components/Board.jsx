@@ -6,10 +6,12 @@ import React, {
   useRef,
 } from "react";
 import CardItem from "./CardItem";
+import { useNavigate } from "react-router-dom";
 
 function getNumber() {
   let randomIndexArr = [];
-  while (randomIndexArr.length < 8) {
+  const [row, col] = sessionStorage.level?.split("*");
+  while (randomIndexArr.length < (row * col) / 2) {
     let randomIndex = Math.floor(Math.random() * 30 + 1);
     if (randomIndexArr.indexOf(randomIndex) === -1) {
       randomIndexArr.push(randomIndex);
@@ -19,12 +21,9 @@ function getNumber() {
   return randomIndexArr;
 }
 function getRadomArr(numbers) {
-  let arr = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-  ];
+  const [row, col] = sessionStorage.level?.split("*");
+
+  let arr = Array.from({ length: col }, () => [0, 0, 0, 0]);
   let numbersDoubleArr = [];
   numbers.map((value) => {
     for (let i = 0; i < 2; i++) {
@@ -32,20 +31,32 @@ function getRadomArr(numbers) {
     }
   });
 
-  for (let i = 0; i < arr[0].length; i++) {
-    for (let j = 0; j < arr.length; j++) {
+  for (let i = 0; i < col; i++) {
+    for (let j = 0; j < row; j++) {
       let randomArrIndex = Math.floor(Math.random() * numbersDoubleArr.length);
       arr[i][j] = numbersDoubleArr[randomArrIndex];
 
       numbersDoubleArr.splice(randomArrIndex, 1);
     }
   }
+  console.log("arr", arr);
   return arr;
+}
+function getBoardCount() {
+  const [row, col] = sessionStorage.level
+    ? sessionStorage.level.split("*")
+    : [4, 4];
+  return row * col;
 }
 export default function Board() {
   const [boardArr, setBoardArr] = useState(() => getRadomArr(getNumber()));
 
   const [cardArr, setCardArr] = useState([]);
+  const totalCount = useRef(0);
+  totalCount.current = getBoardCount();
+  console.log("totalCount", totalCount);
+
+  const navigate = useNavigate();
   const [result, setResult] = useState("짝을 맞춰주세요");
   const timeout = useRef(null);
 
@@ -71,6 +82,17 @@ export default function Board() {
 
   useEffect(() => {
     onCheckCardMatching();
+
+    function GameMatchedCount() {
+      let count = 0;
+      for (let board of boardArr) {
+        for (let card of board) {
+          if (card == null) count++;
+        }
+      }
+      if (count === totalCount.current) navigate("/game/win");
+    }
+    GameMatchedCount();
     return () => clearTimeout(timeout.current);
   }, [cardArr]);
 
@@ -108,21 +130,6 @@ export default function Board() {
             );
           });
         })}
-      {/* <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div>
-      <div className="w-28 h-32 bg-slate-50"></div> */}
     </div>
   );
 }
