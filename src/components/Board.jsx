@@ -54,7 +54,6 @@ export default function Board() {
   const [cardArr, setCardArr] = useState([]);
   const totalCount = useRef(0);
   totalCount.current = getBoardCount();
-  console.log("totalCount", totalCount);
 
   const navigate = useNavigate();
   const [result, setResult] = useState("짝을 맞춰주세요");

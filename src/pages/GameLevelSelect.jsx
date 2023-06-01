@@ -3,7 +3,7 @@ import { useGameLevelContext } from "../context/GameLevelContext";
 import { useNavigate } from "react-router-dom";
 
 export default function GameLevelSelect() {
-  const { setGameLevel } = useGameLevelContext();
+  const { level, setGameLevel } = useGameLevelContext();
 
   const navigate = useNavigate();
   const levelList = useRef(["4 * 4", "4 * 5", "4 * 6"]);
@@ -13,7 +13,7 @@ export default function GameLevelSelect() {
   };
   return (
     <div
-      className="flex w-full h-full bg-cover grayscale-70"
+      className="flex w-full h-full bg-cover"
       style={{
         backgroundImage: `url(${process.env.PUBLIC_URL}/assets/image/start.jpg)`,
       }}

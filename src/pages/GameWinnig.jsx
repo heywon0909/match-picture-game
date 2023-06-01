@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function GameWinnig() {
   return (
     <div
-      className="flex w-full h-full bg-cover grayscale-70"
+      className="flex w-full h-full bg-cover"
       style={{
         backgroundImage: `url(${process.env.PUBLIC_URL}/assets/image/start.jpg)`,
       }}

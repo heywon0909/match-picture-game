@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import GameStart from "./pages/GameStart";
 import GameLevelSelect from "./pages/GameLevelSelect";
 import GameWinnig from "./pages/GameWinnig";
+import GameOver from "./pages/GameOver";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: "/game/select", element: <GameLevelSelect /> },
       { path: "/game/start", element: <GameStart /> },
       { path: "/game/win", element: <GameWinnig /> },
+      { path: "/game/over", element: <GameOver /> },
     ],
   },
 ]);
