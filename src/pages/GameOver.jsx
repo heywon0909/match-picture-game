@@ -32,6 +32,15 @@ export default function GameOver() {
             </button>
           </div>
         </Link>
+        <Link to="/">
+          <div className="flex relative top-8 grayscale-0 pt-5">
+            <button className="w-64 h-10 bg-white  font-extrabold text-2xl rounded-md">
+              <p className="text-purple-700 hover:text-indigo-300 animate-pulse">
+                Home
+              </p>
+            </button>
+          </div>
+        </Link>
       </div>
     </div>
   );
