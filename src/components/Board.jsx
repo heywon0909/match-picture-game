@@ -7,26 +7,26 @@ import React, {
 } from "react";
 import CardItem from "./CardItem";
 import { useNavigate } from "react-router-dom";
+import { useGameLevelContext } from '../context/GameLevelContext';
 
 function getNumber() {
-  let randomIndexArr = [];
-  const [row, col] = sessionStorage.level?.split("*");
-  while (randomIndexArr.length < (row * col) / 2) {
-    let randomIndex = Math.floor(Math.random() * 30 + 1);
-    if (randomIndexArr.indexOf(randomIndex) === -1) {
-      randomIndexArr.push(randomIndex);
-    }
-  }
-
+  let randomIndexArr = Array.from({length:30},(v,i)=>i+1);  
   return randomIndexArr;
+}
+function getRowCol() {
+  const [row, col] = sessionStorage.level?.split("*");
+  console.log('row',row,col)
+  return { row: row.trim(), col: col.trim() };
 }
 function getRadomArr(numbers) {
   const [row, col] = sessionStorage.level?.split("*");
 
-  let arr = Array.from({ length: col }, () => [0, 0, 0, 0]);
+  let arr = Array.from({ length: col }, () => Array.from({length:row},()=>0));
   let numbersDoubleArr = [];
+  const len = (row * col) / 30;
   numbers.map((value) => {
-    for (let i = 0; i < 2; i++) {
+    
+    for (let i = 0; i < len; i++) {
       numbersDoubleArr.push(value);
     }
   });
@@ -48,6 +48,7 @@ function getBoardCount() {
     : [4, 4];
   return row * col;
 }
+
 export default function Board() {
   const [boardArr, setBoardArr] = useState(() => getRadomArr(getNumber()));
 
@@ -58,6 +59,8 @@ export default function Board() {
   const navigate = useNavigate();
   const [result, setResult] = useState("짝을 맞춰주세요");
   const timeout = useRef(null);
+  const { level } = useGameLevelContext();
+  console.log('level', level)
 
   const onCheckCardMatching = () => {
     if (cardArr.length === 2) {
@@ -112,8 +115,20 @@ export default function Board() {
       ? true
       : false;
   };
+
+  const rootClass = () => {
+    switch (level) {
+      case '15 * 8': return "w-full p-2 grid grid-rows-8 grid-flow-col md:gap-2 gap-4 place-content-center"
+      case '15 * 10': return "w-full p-2 grid grid-rows-10 grid-flow-col md:gap-2 gap-4 place-content-center"
+      case '15 * 4': return "w-full p-2 grid grid-rows-4 grid-flow-col md:gap-2 gap-4 place-content-center"
+      case '15 * 6': return "w-full p-2 grid grid-rows-6 grid-flow-col md:gap-2 gap-4 place-content-center"
+    }
+  
+  }
+
+
   return (
-    <div className="w-full p-2 grid grid-rows-4 grid-flow-col md:gap-2 gap-4 place-content-center">
+    <div className={rootClass()}>
       {boardArr &&
         boardArr.map((board, row) => {
           return board.map((card, col) => {
