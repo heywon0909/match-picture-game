@@ -28,7 +28,7 @@ module.exports = {
         'footer': '200px minmax(900px, 1fr) 100px',
       },
        height: {
-        'custom': '900px',
+        'custom': '699px',
       }
     },
   },
