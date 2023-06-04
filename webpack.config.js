@@ -3,6 +3,8 @@ const webpack = require("webpack");
 // process.env.NODE_ENV = "production";
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const RefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+
+
 module.exports = {
   name: "match-picture-game",
   mode: "development",
@@ -40,7 +42,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "Hot Module Replacement",
     }),
-    new RefreshWebpackPlugin(),
+    new RefreshWebpackPlugin()
   ],
   output: {
     path: path.join(__dirname, "dist"),
