@@ -5,7 +5,7 @@ const CardItem = memo(({ card, row, col,dispatch }) => {
   // const [onFocus,setOnFocus] = useState(false);
   
   const onClickItem = useCallback(() => {
-    console.log('card',card)
+    
     
     if(card){
       dispatch({type:CLICK_CARD,cardObj:{card:card.value, row, col }});
@@ -14,7 +14,7 @@ const CardItem = memo(({ card, row, col,dispatch }) => {
    
   },[card]);
   const cardClass = () => {
-    console.log('여기',card)
+    
     if (card.value == null)
       return "w-12 h-12 bg-brand";
     if (card.on)

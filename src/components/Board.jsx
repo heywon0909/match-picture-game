@@ -19,7 +19,7 @@ function getNumber() {
 }
 function getRadomArr(numbers) {
   const [row, col] = sessionStorage.level ? sessionStorage.level?.split("*") : [15,10]
-
+  console.log('row',row,col)
   let arr = Array.from({ length: col }, () => Array.from({length:row},()=>0));
   let numbersDoubleArr = [];
   const len = (row * col) / 30;
@@ -53,6 +53,7 @@ function shuffleBoard(boardArr){
     return newBoardArr;
 }
 function getBoardCount() {
+  console.log('sessionStorage.level',sessionStorage.level)
   const [row, col] = sessionStorage.level
     ? sessionStorage.level.split("*")
     : [4, 4];
@@ -133,9 +134,13 @@ const reducer = (state,action) => {
 
 
 const Board = () => {
-  const [state,dispatch] = useReducer(reducer,initialState);
+  const [state,dispatch] = useReducer(reducer,{
+    boardArr:getRadomArr(getNumber()),
+    cardArr:[],
+    boardCount:getBoardCount()
+  });
   const {cardArr,boardArr,boardCount} = state;
- 
+  console.log('boardCount',boardCount)
  
 
   const navigate = useNavigate();
