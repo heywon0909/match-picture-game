@@ -3,7 +3,7 @@ import { useGameLevelContext } from "../context/GameLevelContext";
 import { useNavigate } from "react-router-dom";
 
 export default function GameLevelSelect() {
-  const { level, setGameLevel } = useGameLevelContext();
+  const { setGameLevel } = useGameLevelContext();
 
   const navigate = useNavigate();
   const levelList = useRef(["15 * 10","15 * 8","15 * 6","15 * 4" ]);

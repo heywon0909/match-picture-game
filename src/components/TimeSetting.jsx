@@ -11,7 +11,7 @@ export default function TimeSetting() {
 
   useEffect(() => {
     timeout.current = setInterval(() => {
-      if (time.min === 1 && time.sec === 30) {
+      if (time.min === 2 && time.sec === 30) {
         closeGame();
         clearInterval(timeout.current);
         timeout.current = null;

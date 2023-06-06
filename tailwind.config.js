@@ -29,6 +29,7 @@ module.exports = {
       },
        height: {
         'custom': '699px',
+        'table': '565px'
       }
     },
   },
