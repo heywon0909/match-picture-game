@@ -1,12 +1,10 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
-import { CLICK_CARD } from "./Board";
+import { useGameLevelContext,CLICK_CARD } from '../context/GameLevelContext';
 
-const CardItem = memo(({ card, row, col,dispatch }) => {
-  // const [onFocus,setOnFocus] = useState(false);
+const CardItem = memo(({ card, row, col }) => {
+  const { dispatch } = useGameLevelContext();
   
   const onClickItem = useCallback(() => {
-    
-    
     if(card){
       dispatch({type:CLICK_CARD,cardObj:{card:card.value, row, col }});
     }

@@ -1,14 +1,16 @@
 import React, { useRef } from "react";
-import { useGameLevelContext } from "../context/GameLevelContext";
+import { SET_LEVEL, useGameLevelContext } from "../context/GameLevelContext";
 import { useNavigate } from "react-router-dom";
 
 export default function GameLevelSelect() {
-  const { setGameLevel } = useGameLevelContext();
+  const { dispatch } = useGameLevelContext();
 
   const navigate = useNavigate();
   const levelList = useRef(["15 * 10","15 * 8"]);
   const onSetGameLevel = (param) => {
-    setGameLevel(param);
+    const level = [...param.split('*').map(v=>Number(v))];
+    sessionStorage.level = level;
+    dispatch({ type: SET_LEVEL, level });
     navigate(`/game/start`);
   };
   return (

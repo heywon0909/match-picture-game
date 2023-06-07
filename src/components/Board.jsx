@@ -2,7 +2,7 @@ import React, {
   useState,
   useEffect,
   useCallback,
-  useMemo,
+  memo,
   useRef,
   useReducer,
 } from "react";
@@ -10,143 +10,26 @@ import CardItem from "./CardItem";
 import { useNavigate } from "react-router-dom";
 import { useGameLevelContext } from '../context/GameLevelContext';
 import BoardTr from "./BoardTr";
+import { MATCH_CARD, INIT_CARD,SHUFFLE_BOARD } from '../context/GameLevelContext';
 
 
 
-function getNumber() {
-  let randomIndexArr = Array.from({length:30},(v,i)=>i+1);  
-  return randomIndexArr;
-}
-function getRadomArr(numbers) {
-  const [row, col] = sessionStorage.level ? sessionStorage.level?.split("*") : [15,10]
-  console.log('row',row,col)
-  let arr = Array.from({ length: col }, () => Array.from({length:row},()=>0));
-  let numbersDoubleArr = [];
-  const len = (row * col) / 30;
-  numbers.map((value) => {
-    
-    for (let i = 0; i < len; i++) {
-      numbersDoubleArr.push(value);
-    }
-  });
-
-  for (let i = 0; i < col; i++) {
-    for (let j = 0; j < row; j++) {
-      let randomArrIndex = Math.floor(Math.random() * numbersDoubleArr.length);
-      arr[i][j] = {value:numbersDoubleArr[randomArrIndex],on:false};
-
-      numbersDoubleArr.splice(randomArrIndex, 1);
-    }
-  }
-  return arr;
-}
-function shuffleBoard(boardArr){
-   let newBoardArr = Array.from({ length: 15 }, () => Array.from({length:(boardArr[0]/15)},()=>0));
-    let boardFlatArr= boardArr.flat();
-    for(let i=0;i<boardArr.length;i++){
-      for(let j=0;j<boardArr[i].length;j++){
-       let randomArrIndex =Math.floor(Math.random() * boardFlatArr.length);
-        newBoardArr[i][j] = {value: boardFlatArr[randomArrIndex].value,on:false};
-        boardFlatArr.splice(randomArrIndex,1);
-      }
-    }
-    return newBoardArr;
-}
-function getBoardCount() {
-  console.log('sessionStorage.level',sessionStorage.level)
-  const [row, col] = sessionStorage.level
-    ? sessionStorage.level.split("*")
-    : [4, 4];
-  return row * col;
-}
-
-const initialState = {
-  boardArr:getRadomArr(getNumber()),
-  cardArr:[],
-  boardCount:getBoardCount()
-}
-export const CLICK_CARD ='CLICK_CARD';
-export const MATCH_CARD='MATCH_CARD';
-export const INIT_CARD='INIT_CARD';
-export const SHUFFLE_BOARD='SHUFFLE_BOARD';
-const reducer = (state,action) => {
-    switch(action.type){
-      case CLICK_CARD:{
-        let cardArr = null;
-        let boardArr = [...state.boardArr];
-        let newBoard = null;
-        if(state.cardArr.length>=2){
-            cardArr = [...state.cardArr];
-        }else{
-            cardArr = [...state.cardArr, action.cardObj];
-            boardArr[action.cardObj.row] = [...state.boardArr[action.cardObj.row]];
-            boardArr[action.cardObj.row][action.cardObj.col] = {value:action.cardObj.card,on:true}
-        }
-
-       
-
-        console.log('card',cardArr)
-        return {
-          ...state,
-          boardArr,
-          cardArr
-        }
-      }
-      case MATCH_CARD:{
-        const newBoardArr = [...state.boardArr];
-          newBoardArr[action.card_1.row]=[...state.boardArr[action.card_1.row]];
-          newBoardArr[action.card_1.row][action.card_1.col] = {value:null,on:false}; 
-          if(action.card_1.row === action.card_2.row){
-            newBoardArr[action.card_1.row][action.card_2.col] = {value:null,on:false}; 
-          }else{
-            newBoardArr[action.card_2.row]=[...state.boardArr[action.card_2.row]];
-            newBoardArr[action.card_2.row][action.card_2.col] = {value:null,on:false};
-          }
-          
-        return {
-          ...state,boardArr:newBoardArr
-        }
-      }
-      case SHUFFLE_BOARD:{
-        return{
-          ...state, cardArr:[], boardArr: shuffleBoard(state.boardArr)
-        }
-      }
-      case INIT_CARD:{
-        const boardArr = [...state.boardArr];
-        const [card1,card2] =[...state.cardArr];
-        boardArr[card1.row]=[...state.boardArr[card1.row]];
-        boardArr[card1.row][card1.col] = {value:null,on:false}; 
-        if(card1.row === card2.row){
-          boardArr[card1.row][card2.col] = {value:null,on:false}; 
-        }else{
-          boardArr[card2.row]=[...state.boardArr[card2.row]];
-          boardArr[card2.row][card2.col] = {value:null,on:false};
-        }
-       
-        return {
-          ...state,boardArr,cardArr:[]
-        }
-      }
-    }
-}
 
 
 
 const Board = () => {
-  const [state,dispatch] = useReducer(reducer,{
-    boardArr:getRadomArr(getNumber()),
-    cardArr:[],
-    boardCount:getBoardCount()
-  });
-  const {cardArr,boardArr,boardCount} = state;
-  console.log('boardCount',boardCount)
- 
+
+  const { boardArr, level, cardArr, dispatch } = useGameLevelContext();
+  console.log('boardArr',boardArr)
+  let boardCount = useRef(null);
+  const [row, col] = level;
+  boardCount.current = row * col;
+
 
   const navigate = useNavigate();
   const timeout = useRef(null);
   const checkArr= useRef([]);
-  checkArr.current = Array.from({length:(boardCount/15)},()=>Array.from({length:15},()=>0))
+  checkArr.current = Array.from({length:(boardCount.current/15)},()=>Array.from({length:15},()=>0))
   
   
 
