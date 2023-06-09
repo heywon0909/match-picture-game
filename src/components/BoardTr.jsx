@@ -11,9 +11,9 @@ const BoardTr = memo(({ row }) => {
         boardArr[row]?.map((card, col) => (
           <CardItem
             key={`카드번호${card}배열${row}${col}`}
-            card={boardArr[row][col]}
             row={row}
             col={col}
+            card={card}
           />
         ))}
     </tr>

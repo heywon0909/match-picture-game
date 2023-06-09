@@ -33,20 +33,14 @@ const Board = () => {
   useEffect(() => {
     console.log("카드", cardArr);
     if (cardArr.length === 2) {
-      const [card_1, card_2] = cardArr;
-      console.log("cardArr", cardArr);
+      const cardList = cardArr.sort((a, b) => a.row - b.row);
+      const [card_1, card_2] = cardList;
+
       let answer = false;
-      if (
-        card_1.card === card_2.card &&
-        card_1.row == card_2.row &&
-        card_1.col === card_2.col
-      )
-        return;
-      if (
-        card_1.card === card_2.card &&
-        (card_1.row !== card_2.row || card_1.col !== card_2.col)
-      ) {
-        // 같은 행일때
+      const isSameValue = card_1.card === card_2.card;
+      if (!isSameValue) answer = false;
+      if (isSameValue) {
+        // 같은 행일때, 열이 0 또는 14일때
         if (
           card_1.row === card_2.row &&
           card_2.col !== card_1.col &&
@@ -56,99 +50,7 @@ const Board = () => {
           answer = true;
         }
 
-        // 같은 열일때
-        if (
-          !answer &&
-          card_1.row === card_2.row &&
-          Math.abs(card_2.col - card_1.col) === 1
-        ) {
-          console.log("맞았습니다.");
-          answer = true;
-        }
-
-        if (!answer && card_1.row === card_2.row) {
-          if (card_2.col > card_1.col) {
-            let index = card_2.col;
-            while (index > card_1.col) {
-              if (boardArr[card_1.row][index] == null) {
-                index--;
-              } else {
-                break;
-              }
-            }
-            if (
-              boardArr[card_1.row][card_1.col] === boardArr[card_1.row][index]
-            ) {
-              console.log("맞았습니다.");
-              answer = true;
-            }
-          } else {
-            let index = card_1.col;
-            while (index > card_2.col) {
-              if (boardArr[card_2.row][index] == null) {
-                index--;
-              } else {
-                break;
-              }
-            }
-            if (
-              boardArr[card_2.row][card_2.col] === boardArr[card_2.row][index]
-            ) {
-              console.log("맞았습니다.");
-              answer = true;
-            }
-          }
-        }
-
-        if (
-          !answer &&
-          card_1.col === card_2.col &&
-          Math.abs(card_2.row - card_1.row) === 1
-        ) {
-          console.log("맞았습니다.");
-          answer = true;
-        }
-
-        if (!answer && card_1.col === card_2.col) {
-          if (card_2.row > card_1.row) {
-            let index = card_2.row;
-            while (index > card_1.row) {
-              if (boardArr[index][card_1.col] == null) {
-                index--;
-              } else {
-                break;
-              }
-            }
-            if (
-              boardArr[card_1.row][card_1.col] === boardArr[index][card_1.col]
-            ) {
-              console.log("맞았습니다.");
-              answer = true;
-            }
-          } else {
-            let index = card_1.row;
-            while (index > card_2.row) {
-              if (boardArr[index][card_2.col] == null) {
-                index--;
-              } else {
-                break;
-              }
-            }
-            if (
-              boardArr[card_2.row][card_2.col] === boardArr[index][card_2.col]
-            ) {
-              console.log("맞았습니다.");
-              answer = true;
-            }
-          }
-        }
-
-        console.log(
-          "(card_1.col=== card_2.col) && (card_1.col === 0 || card_1.col === boardArr.length-1) && (card_1.row !== card_2.row)",
-          card_1.col === card_2.col &&
-            (card_1.col === 0 || card_1.col === boardArr.length - 1) &&
-            card_1.row !== card_2.row
-        );
+        // 같은 열일때, 행이 0 또는 14일때
         if (
           !answer &&
           card_1.col === card_2.col &&
@@ -159,21 +61,74 @@ const Board = () => {
           answer = true;
         }
 
+        // 같은 행, 열의 절댓값 차가 1일때
+        if (!answer && card_1.row === card_2.row) {
+          const diff = Math.abs(card_2.col - card_1.col);
+
+          if (diff === 1) {
+            answer = true;
+          } else if (diff > 1) {
+            let startCol =
+              card_2.col > card_1.col ? card_1.col + 1 : card_2.col + 1;
+            let lastCol = startCol === card_1.col + 1 ? card_2.col : card_1.col;
+
+            while (startCol < lastCol) {
+              if (boardArr[card_1.row][startCol].value == null) {
+                startCol++;
+              } else {
+                answer = false;
+                break;
+              }
+            }
+            if (startCol === lastCol) {
+              console.log("맞았습니다.");
+              answer = true;
+            }
+          }
+        }
+
+        // 같은 열, 다른 행인데, 행의 절댓값 차가 1 이상 일때
+        if (!answer && card_1.col === card_2.col) {
+          const diff = Math.abs(card_2.row - card_1.row);
+          if (diff === 1) {
+            console.log("맞았습니다.");
+            answer = true;
+          } else if (diff > 1) {
+            let startRow = card_1.row + 1;
+            let lastRow = card_1.row;
+            while (startRow < lastRow) {
+              if (boardArr[startRow][card_1.col].value === null) {
+                startRow++;
+              } else {
+                answer = false;
+                break;
+              }
+            }
+            if (startRow === lastRow) {
+              console.log("맞았습니다.");
+              answer = true;
+            }
+          }
+        }
+
         if (!answer) {
-          console.log("타니");
-          const cardList = cardArr.sort((a, b) => a.row - b.row);
-          const [card1, card2] = cardList;
-          const start_row = Math.min(card1.row, card2.row);
-          const end_row = Math.max(card1.row, card2.row);
-          const start_col = Math.min(card1.col, card2.col);
-          const end_col = Math.max(card1.col, card2.col);
+          const start_row = card_1.row;
+          const end_row = card_2.row;
+          const start_col = Math.min(card_1.col, card_2.col);
+          const end_col = Math.max(card_1.col, card_2.col);
+          console.log("cardList", cardList);
+          console.log("start", start_col, end_col);
 
           const updatedCheckArr = [...checkArr.current]; // 새로운 배열 생성
 
           for (let i = start_row; i <= end_row; i++) {
             const newRow = [...updatedCheckArr[i]]; // 새로운 행 생성
             for (let j = start_col; j <= end_col; j++) {
-              if (boardArr[i][j] == null) {
+              if (
+                boardArr[i][j].value == null ||
+                (card_1.row === i && card_1.col === j) ||
+                (card_2.row === i && card_2.col === j)
+              ) {
                 newRow[j] = 1; // 요소 수정
               }
             }
@@ -186,46 +141,34 @@ const Board = () => {
           let dx = [-1, 0, 1, 0];
           let dy = [0, 1, 0, -1];
           const dfs = (x, y) => {
-            if (x === card2.row && y === card2.col) {
+            if (x === card_2.row && y === card_2.col) {
               console.log("맞았습니다.");
               answer = true;
             } else {
               for (let k = 0; k < 4; k++) {
                 let nx = x + dx[k];
                 let ny = y + dy[k];
-                console.log("nx");
-                if (
-                  nx >= start_row &&
-                  nx <= end_row &&
-                  ny >= start_col &&
-                  ny <= end_row &&
-                  checkArr[nx][ny] === 1
-                ) {
-                  let updatedCheckArr = [...checkArr.current];
-                  const newRow = [...updatedCheckArr[nx]];
-                  newRow[ny] = 0;
-                  checkArr.current = updatedCheckArr;
+
+                if (checkArr.current[nx][ny] === 1) {
+                  checkArr.current[nx][ny] = 0;
+
                   dfs(nx, ny);
-                  let updatedCheckArr1 = [...checkArr.current];
-                  const newRow1 = [...updatedCheckArr1[nx]];
-                  newRow1[ny] = 1;
-                  checkArr.current = updatedCheckArr1;
+                  checkArr.current[nx][ny] = 1;
                 }
               }
             }
           };
 
-          dfs(card1.row, card1.col);
+          dfs(card_1.row, card_1.col);
         }
+      }
 
-        if (answer) {
-          dispatch({ type: MATCH_CARD, card_1, card_2 });
-        } else {
-          console.log("틀렸습니다.");
-        }
+      if (answer) {
+        dispatch({ type: MATCH_CARD, card_1, card_2 });
       } else {
         console.log("틀렸습니다.");
       }
+
       timeout.current = setTimeout(() => {
         dispatch({ type: INIT_CARD });
       }, 200);

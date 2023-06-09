@@ -136,16 +136,27 @@ const reducer = (state, action) => {
         boardArr: newBoardArr,
       };
     }
+    // case WRONG_MATCH: {
+    // }
     case INIT_CARD: {
       const boardArr = [...state.boardArr];
       const [card1, card2] = [...state.cardArr];
       boardArr[card1.row] = [...state.boardArr[card1.row]];
-      boardArr[card1.row][card1.col] = { value: null, on: false };
+      boardArr[card1.row][card1.col] = {
+        ...boardArr[card1.row][card1.col],
+        on: false,
+      };
       if (card1.row === card2.row) {
-        boardArr[card1.row][card2.col] = { value: null, on: false };
+        boardArr[card1.row][card2.col] = {
+          ...boardArr[card1.row][card2.col],
+          on: false,
+        };
       } else {
         boardArr[card2.row] = [...state.boardArr[card2.row]];
-        boardArr[card2.row][card2.col] = { value: null, on: false };
+        boardArr[card2.row][card2.col] = {
+          ...boardArr[card2.row][card2.col],
+          on: false,
+        };
       }
 
       return {

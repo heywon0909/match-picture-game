@@ -6,20 +6,24 @@ import {
 } from "../context/GameLevelContext";
 
 const CardItem = memo(({ card, row, col }) => {
-  const { dispatch, cardArr } = useGameLevelContext();
+  const { dispatch, cardArr, boardArr } = useGameLevelContext();
 
   const onClickItem = useCallback(() => {
     // 같은 카드 있으면 터치 안되게
-    let find = cardArr.find(
-      (item) =>
-        item.value === card.value && item.row === row && item.col === col
-    );
+    if (!card.value) return;
+
+    console.log("cardArr", cardArr, card);
+
+    let find = cardArr.find((item) => item.card === card.value);
+    console.log("find", find);
     if (find) {
       return;
     }
-    if (card) {
-      dispatch({ type: CLICK_CARD, cardObj: { card: card.value, row, col } });
-    }
+
+    dispatch({
+      type: CLICK_CARD,
+      cardObj: { card: card.value, row, col },
+    });
   }, [card]);
   const cardClass = useMemo(() => {
     if (card.value == null) return "w-12 h-12 bg-brand";
@@ -29,15 +33,19 @@ const CardItem = memo(({ card, row, col }) => {
       return "w-12 h-12 bg-slate-50  hover:border-4 hover:border-blue-400";
   }, [card]);
 
-  return <RealTd cardClass={cardClass} onClickItem={onClickItem} card={card} />;
+  console.log("td rendered");
+  return (
+    <RealTd cardClass={cardClass} onClickItem={onClickItem} data={card.value} />
+  );
 });
 
-const RealTd = memo(({ cardClass, onClickItem, card }) => {
+const RealTd = memo(({ cardClass, onClickItem, data }) => {
+  console.log("real td rendered");
   return (
     <td className={cardClass} onClick={onClickItem}>
-      {card.value != null && (
+      {data != null && (
         <img
-          src={process.env.PUBLIC_URL + `/assets/image/${card.value}.png`}
+          src={process.env.PUBLIC_URL + `/assets/image/${data}.png`}
           alt="picture"
         />
       )}
