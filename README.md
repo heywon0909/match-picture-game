@@ -19,6 +19,15 @@
 3. npm run start 명령어로 화면을 띄운다. 
 
 
+#### 저작권
+
+1. 효과음
+✔ Pling Sound by KevanGC
+✔ From
+http://soundbible.com/1645-Pling.html
+✔ Distributor
+‘대한민국 대표 BGM 셀바이뮤직’ https://www.sellbuymusic.com
+
 
 
 ![image](https://github.com/heywon0909/match-picture-game/assets/50330312/89e617d2-479f-4e4b-b0e2-f40747c73287)

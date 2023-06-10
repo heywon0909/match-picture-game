@@ -30,6 +30,9 @@ const Board = () => {
   checkArr.current = Array.from({ length: boardCount.current / 15 }, () =>
     Array.from({ length: 15 }, () => 0)
   );
+  const audioContainer = useRef(null);
+  const audioWrongContainer = useRef(null);
+
 
   useEffect(() => {
     
@@ -313,9 +316,11 @@ const Board = () => {
         }
       }
      
-      if (answer===true) {
+      if (answer === true) {
+        audioContainer.current.play()
         dispatch({ type: MATCH_CARD, card_1, card_2 });
       } else {
+        audioWrongContainer.current.play()
         console.log("틀렸습니다.");
       }
 
@@ -346,6 +351,12 @@ const Board = () => {
 
   return (
     <div className="block">
+      <audio id="audioContainer" ref={audioContainer}>
+        <source id="audioSource" src={process.env.PUBLIC_URL+"/assets/audio/Pling Sound.mp3"} />
+      </audio>
+      <audio id="audioWrongContainer" ref={audioWrongContainer}>
+        <source id="audioSource" src={process.env.PUBLIC_URL+"/assets/audio/Mario Jumping Sound.mp3"} />
+      </audio>
       <div
         onClick={onShuffle}
         className="mt-2 p-2 w-20 h-6 text-sm rounded-md bg-purple-800 text-white flex justify-center items-center relative left-0"
