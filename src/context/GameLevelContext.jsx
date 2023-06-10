@@ -46,8 +46,9 @@ const getRandomArr = (numbers, level) => {
 };
 
 const shuffleBoard = (boardArr) => {
-  let newBoardArr = Array.from({ length: 15 }, () =>
-    Array.from({ length: boardArr[0] / 15 }, () => 0)
+  console.log('board',boardArr)
+  let newBoardArr = Array.from({ length: boardArr.length }, () =>
+    Array.from({ length: boardArr[0].length }, () => 0)
   );
   let boardFlatArr = boardArr.flat();
   for (let i = 0; i < boardArr.length; i++) {

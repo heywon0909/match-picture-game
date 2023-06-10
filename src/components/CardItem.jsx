@@ -12,10 +12,8 @@ const CardItem = memo(({ card, row, col }) => {
     // 같은 카드 있으면 터치 안되게
     if (!card.value) return;
 
-    console.log("cardArr", cardArr, card);
-
     let find = cardArr.find((item) => item.card === card.value);
-    console.log("find", find);
+    
     if (find) {
       return;
     }
@@ -33,14 +31,14 @@ const CardItem = memo(({ card, row, col }) => {
       return "w-12 h-12 bg-slate-50  hover:border-4 hover:border-blue-400";
   }, [card]);
 
-  console.log("td rendered");
+  //console.log("td rendered");
   return (
     <RealTd cardClass={cardClass} onClickItem={onClickItem} data={card.value} />
   );
 });
 
 const RealTd = memo(({ cardClass, onClickItem, data }) => {
-  console.log("real td rendered");
+  //console.log("real td rendered");
   return (
     <td className={cardClass} onClick={onClickItem}>
       {data != null && (
