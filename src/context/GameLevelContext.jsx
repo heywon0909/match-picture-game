@@ -33,6 +33,25 @@ const getRandomArr = (numbers, level) => {
       numbersDoubleArr.push(value);
     }
   });
+  if(len%2!==0){
+    const left = (len % 2) 
+    const numArr = [...numbers];
+    const numberTmp = [];
+    for(let i=0;i<(left*15);i++){
+      let randomIndex = Math.floor(Math.random()* numArr.length);
+      
+      numberTmp.push(numArr[randomIndex]);
+      numArr.splice(randomIndex,1);
+    }
+   
+    numberTmp.map((value)=>{
+      for(let i=0;i<2;i++){
+        numbersDoubleArr.push(value);
+      }
+    })
+    
+  }
+  
 
   for (let i = 0; i < col; i++) {
     for (let j = 0; j < row; j++) {
@@ -67,13 +86,13 @@ const shuffleBoard = (boardArr) => {
 const initialState = {
   level: sessionStorage.level
     ? sessionStorage.level.split(",").map((v) => Number(v))
-    : [15, 10],
+    : [15, 12],
   cardArr: [],
   boardArr: getRandomArr(
     getNumber(),
     sessionStorage.level
       ? sessionStorage.level.split(",").map((v) => Number(v))
-      : [15, 10]
+      : [15, 12]
   ),
 };
 

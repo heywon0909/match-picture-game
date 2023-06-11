@@ -6,7 +6,7 @@ export default function GameLevelSelect() {
   const { dispatch } = useGameLevelContext();
 
   const navigate = useNavigate();
-  const levelList = useRef(["15 * 10","15 * 8"]);
+  const levelList = useRef(["15 * 10","15 * 8","15 * 4"]);
   const onSetGameLevel = (param) => {
     const level = [...param.split('*').map(v=>Number(v))];
     sessionStorage.level = level;
