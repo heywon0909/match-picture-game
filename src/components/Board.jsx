@@ -123,13 +123,13 @@ const Board = () => {
             let card1_row = card_1.row === boardArr.length - 1 ? card_1.row : card_1.row + 1;
             let card2_row = card_2.row === boardArr.length - 1 ? card_2.row : card_2.row + 1;
             while (card1_row < boardArr.length -1) {
-              if (boardArr[card1_row][card_1.col] != null) {
+              if (boardArr[card1_row][card_1.col].value != null) {
                 break;
               }
               card1_row++;
             }
             while (card2_row < boardArr.length -1) {
-              if (boardArr[card2_row][card_2.col] != null) {
+              if (boardArr[card2_row][card_2.col].value != null) {
                 break;
               }
               card2_row++;
@@ -141,17 +141,18 @@ const Board = () => {
             }
             
           } else {
+            console.log('여기타니')
              let card1_row = card_1.row === 0 ? card_1.row : card_1.row - 1;
              let card2_row = card_2.row === 0 ? card_2.row : card_2.row - 1;
             
             while (card1_row > 0) {
-              if (boardArr[card1_row][card_1.col] != null) {
+              if (boardArr[card1_row][card_1.col].value != null) {
                 break;
               }
               card1_row--;
             }
             while (card2_row > 0) {
-              if (boardArr[card2_row][card_2.col] != null) {
+              if (boardArr[card2_row][card_2.col].value != null) {
                 break;
               }
               card2_row--;
@@ -173,13 +174,13 @@ const Board = () => {
             let card1_col = card_1.col === 14 ? card_1.col : card_1.col + 1;
             let card2_col = card_2.col === 14 ? card_2.col : card_2.col + 1;
             while (card1_col < 14) {
-              if (boardArr[card_1.row][card1_col] != null) {
+              if (boardArr[card_1.row][card1_col].value != null) {
                 break;
               }
               card1_col++;
             }
             while (card2_col < 14) {
-              if (boardArr[card_2.row][card2_col] != null) {
+              if (boardArr[card_2.row][card2_col].value != null) {
                 break;
               }
               card2_col++;
