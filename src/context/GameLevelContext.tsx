@@ -1,19 +1,41 @@
+import * as React from 'react'
 import {
   createContext,
   useState,
   useContext,
   useReducer,
   useEffect,
+  FC,
   useMemo,
   useCallback,
 } from "react";
 
-type LEVEL = [15,10]
-interface Context {
-  level:
+export const CODE = {
+  ROW: 15,
+  COL: 10
+} as const;
+
+export type row = typeof CODE.ROW;
+export type col = typeof CODE.COL;
+
+interface cardState {
+  value: number | null,
+  on:boolean
 }
-export const GameLevelContext = createContext({
-  level: typeof LEVEL,
+
+interface cardObjState{
+  card: number | null,
+  row: number,
+  col: number
+}
+
+interface Context{
+  level: [row,col],
+  cardArr: cardObjState[],
+  boardArr: null | cardState[][],
+}
+export const GameLevelContext = createContext<Context>({
+  level: [15,10],
   cardArr: [],
   boardArr: null,
 });
@@ -25,14 +47,12 @@ export const MATCH_CARD = "MATCH_CARD" as const;
 export const INIT_CARD = "INIT_CARD" as const;
 
 const getNumber = () => Array.from({ length: 30 }, (_v, i) => i + 1);
-const getRandomArr = (numbers, level) => {
+const getRandomArr = (numbers:number[], level:[row,col]) => {
   const [row, col] = level;
-  let arr = Array.from({ length: col }, () =>
-    Array.from({ length: row }, () => 0)
-  );
-  let numbersDoubleArr = [];
+  let arr: cardState[][] = Array.from({ length: col }, () => Array.from({ length: row }, () => ({ value: 0, on: false })));
+  let numbersDoubleArr:number[] = [];
   const len = (row * col) / 30;
-  numbers.map((value) => {
+  numbers.map((value:number) => {
     for (let i = 0; i < len; i++) {
       numbersDoubleArr.push(value);
     }
@@ -66,17 +86,17 @@ const getRandomArr = (numbers, level) => {
   return arr;
 };
 
-const shuffleBoard = (boardArr) => {
+const shuffleBoard = (boardArr:cardState[][]) => {
   console.log("board", boardArr);
   let newBoardArr = Array.from({ length: boardArr.length }, () =>
-    Array.from({ length: boardArr[0].length }, () => 0)
+    Array.from({ length: boardArr[0].length }, () => ({value:0,on:false}))
   );
   let boardFlatArr = boardArr.flat();
   for (let i = 0; i < boardArr.length; i++) {
     for (let j = 0; j < boardArr[i].length; j++) {
       let randomArrIndex = Math.floor(Math.random() * boardFlatArr.length);
       newBoardArr[i][j] = {
-        value: boardFlatArr[randomArrIndex].value,
+        value: boardFlatArr[randomArrIndex].value as number,
         on: false,
       };
       boardFlatArr.splice(randomArrIndex, 1);
@@ -86,9 +106,9 @@ const shuffleBoard = (boardArr) => {
 };
 
 interface ReducerState {
-  level: number[][];
-  cardArr: [];
-  boardArr: number[][];
+  level: [row,col];
+  cardArr: cardObjState[];
+  boardArr: cardState[][];
 }
 const initialState: ReducerState = {
   level: sessionStorage.level
@@ -103,14 +123,59 @@ const initialState: ReducerState = {
   ),
 };
 
-const reducer = (state, action) => {
+interface SetLevelAction {
+  type: typeof SET_LEVEL,
+  level: [row,col]
+}
+
+export const setLevel = (level:[row,col]): SetLevelAction => {
+  return { type: SET_LEVEL, level };
+}
+
+interface ShuffleBoardAction {
+  type: typeof SHUFFLE_BOARD
+}
+
+export const shuffleBoardAction = (): ShuffleBoardAction => {
+  return { type: SHUFFLE_BOARD };
+}
+
+interface ClickCardAction {
+  type: typeof CLICK_CARD,
+  cardObj: cardObjState
+}
+export const clickCard = (cardObj:cardObjState): ClickCardAction => {
+  return { type: CLICK_CARD, cardObj };
+
+}
+interface MatchCardAction {
+  type: typeof MATCH_CARD,
+  card_1: cardObjState,
+  card_2: cardObjState
+}
+export const matchCard = (card_1:cardObjState,card_2:cardObjState):MatchCardAction => {
+  return { type: MATCH_CARD, card_1, card_2 };
+}
+interface InitCardAction {
+  type: typeof INIT_CARD
+}
+export const initCard = ():InitCardAction => {
+  return { type: INIT_CARD };
+}
+
+export type ReducerActions = SetLevelAction | ShuffleBoardAction | ClickCardAction | MatchCardAction | InitCardAction
+
+
+
+const reducer = (state = initialState, action:ReducerActions):ReducerState => {
   switch (action.type) {
     case SET_LEVEL:
+    
       return {
         ...state,
         cardArr: [],
         boardArr: getRandomArr(getNumber(), action.level),
-        level: [...action.level],
+        level:[15,10] 
       };
     case SHUFFLE_BOARD:
       return {
@@ -195,7 +260,7 @@ const reducer = (state, action) => {
   }
 };
 
-export function GameLevelContextProvider({ children }) {
+const GameLevelContextProvider = ({ children }:{children:React.ReactNode}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [timeOff, setTimeOff] = useState(false);
   const { level, boardArr, cardArr } = state;
@@ -219,6 +284,8 @@ export function GameLevelContextProvider({ children }) {
     </GameLevelContext.Provider>
   );
 }
+
+export default GameLevelContextProvider;
 
 export function useGameLevelContext() {
   return useContext(GameLevelContext);

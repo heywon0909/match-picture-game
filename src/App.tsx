@@ -1,9 +1,9 @@
 import GameBoardTemplate from "./components/GameBoardTemplate";
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
-import * as React from "react";
 import Bottom from "./components/Bottom";
 import { GameLevelContextProvider } from "./context/GameLevelContext";
+import React from 'react';
 
 const App = () => {
   return (
