@@ -9,25 +9,9 @@ import {
   useMemo,
   useCallback,
 } from "react";
+import { SET_LEVEL,SHUFFLE_BOARD,CLICK_CARD,MATCH_CARD,INIT_CARD,row,col,cardObjState,cardState,ReducerActions} from './action';
 
-export const CODE = {
-  ROW: 15,
-  COL: 10
-} as const;
 
-export type row = typeof CODE.ROW;
-export type col = typeof CODE.COL;
-
-interface cardState {
-  value: number | null,
-  on:boolean
-}
-
-interface cardObjState{
-  card: number | null,
-  row: number,
-  col: number
-}
 
 interface Context{
   level: [row,col],
@@ -40,11 +24,7 @@ export const GameLevelContext = createContext<Context>({
   boardArr: null,
 });
 
-export const SET_LEVEL = "SET_LEVEL" as const;
-export const SHUFFLE_BOARD = "SHUFFLE_BOARD" as const;
-export const CLICK_CARD = "CLICK_CARD" as const;
-export const MATCH_CARD = "MATCH_CARD" as const;
-export const INIT_CARD = "INIT_CARD" as const;
+
 
 const getNumber = () => Array.from({ length: 30 }, (_v, i) => i + 1);
 const getRandomArr = (numbers:number[], level:[row,col]) => {
@@ -123,47 +103,7 @@ const initialState: ReducerState = {
   ),
 };
 
-interface SetLevelAction {
-  type: typeof SET_LEVEL,
-  level: [row,col]
-}
 
-export const setLevel = (level:[row,col]): SetLevelAction => {
-  return { type: SET_LEVEL, level };
-}
-
-interface ShuffleBoardAction {
-  type: typeof SHUFFLE_BOARD
-}
-
-export const shuffleBoardAction = (): ShuffleBoardAction => {
-  return { type: SHUFFLE_BOARD };
-}
-
-interface ClickCardAction {
-  type: typeof CLICK_CARD,
-  cardObj: cardObjState
-}
-export const clickCard = (cardObj:cardObjState): ClickCardAction => {
-  return { type: CLICK_CARD, cardObj };
-
-}
-interface MatchCardAction {
-  type: typeof MATCH_CARD,
-  card_1: cardObjState,
-  card_2: cardObjState
-}
-export const matchCard = (card_1:cardObjState,card_2:cardObjState):MatchCardAction => {
-  return { type: MATCH_CARD, card_1, card_2 };
-}
-interface InitCardAction {
-  type: typeof INIT_CARD
-}
-export const initCard = ():InitCardAction => {
-  return { type: INIT_CARD };
-}
-
-export type ReducerActions = SetLevelAction | ShuffleBoardAction | ClickCardAction | MatchCardAction | InitCardAction
 
 
 
