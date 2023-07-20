@@ -8,17 +8,21 @@ import {
   useCallback,
 } from "react";
 
+type LEVEL = [15,10]
+interface Context {
+  level:
+}
 export const GameLevelContext = createContext({
-  level: [15, 10],
+  level: typeof LEVEL,
   cardArr: [],
   boardArr: null,
 });
 
-export const SET_LEVEL = "SET_LEVEL";
-export const SHUFFLE_BOARD = "SHUFFLE_BOARD";
-export const CLICK_CARD = "CLICK_CARD";
-export const MATCH_CARD = "MATCH_CARD";
-export const INIT_CARD = "INIT_CARD";
+export const SET_LEVEL = "SET_LEVEL" as const;
+export const SHUFFLE_BOARD = "SHUFFLE_BOARD" as const;
+export const CLICK_CARD = "CLICK_CARD" as const;
+export const MATCH_CARD = "MATCH_CARD" as const;
+export const INIT_CARD = "INIT_CARD" as const;
 
 const getNumber = () => Array.from({ length: 30 }, (_v, i) => i + 1);
 const getRandomArr = (numbers, level) => {
@@ -33,25 +37,23 @@ const getRandomArr = (numbers, level) => {
       numbersDoubleArr.push(value);
     }
   });
-  if(len%2!==0){
-    const left = (len % 2) 
+  if (len % 2 !== 0) {
+    const left = len % 2;
     const numArr = [...numbers];
     const numberTmp = [];
-    for(let i=0;i<(left*15);i++){
-      let randomIndex = Math.floor(Math.random()* numArr.length);
-      
+    for (let i = 0; i < left * 15; i++) {
+      let randomIndex = Math.floor(Math.random() * numArr.length);
+
       numberTmp.push(numArr[randomIndex]);
-      numArr.splice(randomIndex,1);
+      numArr.splice(randomIndex, 1);
     }
-   
-    numberTmp.map((value)=>{
-      for(let i=0;i<2;i++){
+
+    numberTmp.map((value) => {
+      for (let i = 0; i < 2; i++) {
         numbersDoubleArr.push(value);
       }
-    })
-    
+    });
   }
-  
 
   for (let i = 0; i < col; i++) {
     for (let j = 0; j < row; j++) {
@@ -65,7 +67,7 @@ const getRandomArr = (numbers, level) => {
 };
 
 const shuffleBoard = (boardArr) => {
-  console.log('board',boardArr)
+  console.log("board", boardArr);
   let newBoardArr = Array.from({ length: boardArr.length }, () =>
     Array.from({ length: boardArr[0].length }, () => 0)
   );
@@ -83,15 +85,20 @@ const shuffleBoard = (boardArr) => {
   return newBoardArr;
 };
 
-const initialState = {
+interface ReducerState {
+  level: number[][];
+  cardArr: [];
+  boardArr: number[][];
+}
+const initialState: ReducerState = {
   level: sessionStorage.level
-    ? sessionStorage.level.split(",").map((v) => Number(v))
+    ? sessionStorage.level.split(",").map((v: string) => Number(v))
     : [15, 12],
   cardArr: [],
   boardArr: getRandomArr(
     getNumber(),
     sessionStorage.level
-      ? sessionStorage.level.split(",").map((v) => Number(v))
+      ? sessionStorage.level.split(",").map((v: string) => Number(v))
       : [15, 12]
   ),
 };
