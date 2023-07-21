@@ -2,7 +2,12 @@ import React, { memo } from "react";
 import CardItem from "./CardItem";
 import { useGameLevelContext } from "../context/GameLevelContext";
 
-const BoardTr = memo(({ row }) => {
+interface TrProps {
+  row: number
+}
+
+
+const BoardTr = memo(({ row }:TrProps) => {
   const { boardArr } = useGameLevelContext();
 
   return (

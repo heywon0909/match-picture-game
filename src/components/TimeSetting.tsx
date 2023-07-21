@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useGameLevelContext } from "../context/GameLevelContext";
 import { useNavigate } from "react-router-dom";
 export default function TimeSetting() {
-  const timeout = useRef(null);
+  const timeout = useRef<number>();
   const [time, setTime] = useState({ min: 0, sec: 0 });
 
   const { closeGame } = useGameLevelContext();
@@ -10,11 +10,11 @@ export default function TimeSetting() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    timeout.current = setInterval(() => {
+    timeout.current = window.setInterval(() => {
       if (time.min === 5 && time.sec === 30) {
         closeGame();
         clearInterval(timeout.current);
-        timeout.current = null;
+        timeout.current = 0;
         navigate("/game/over");
       }
       setTime((prevTime) => {
@@ -26,7 +26,7 @@ export default function TimeSetting() {
     return () => clearInterval(timeout.current);
   }, [time]);
 
-  const timeSetting = (time) => {
+  const timeSetting = (time:number) => {
     return time < 10 ? "0" + time : time;
   };
 

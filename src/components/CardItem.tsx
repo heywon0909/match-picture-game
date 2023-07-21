@@ -1,11 +1,20 @@
 import React, { memo, useCallback, useMemo } from "react";
-import {
-  useGameLevelContext,
-  CLICK_CARD,
-  INIT_CARD,
-} from "../context/GameLevelContext";
+import {useGameLevelContext} from "../context/GameLevelContext";
+import { cardState, clickCard } from '../context/action';
 
-const CardItem = memo(({ card, row, col }) => {
+interface CardProps {
+  card: cardState
+  row: number;
+  col: number;
+}
+
+interface RealTdProps {
+  cardClass?: string;
+  onClickItem: () => void;
+  data: number | null;
+}
+
+const CardItem = memo(({ card, row, col }: CardProps) => {
   const { dispatch, cardArr, boardArr } = useGameLevelContext();
 
   const onClickItem = useCallback(() => {
@@ -18,10 +27,7 @@ const CardItem = memo(({ card, row, col }) => {
       return;
     }
 
-    dispatch({
-      type: CLICK_CARD,
-      cardObj: { card: card.value, row, col },
-    });
+    dispatch(clickCard({ card: card.value, row, col }));
   }, [card]);
   const cardClass = useMemo(() => {
     if (card.value == null) return "w-12 h-12 bg-brand";
@@ -37,7 +43,9 @@ const CardItem = memo(({ card, row, col }) => {
   );
 });
 
-const RealTd = memo(({ cardClass, onClickItem, data }) => {
+
+
+const RealTd = memo(({ cardClass, onClickItem, data }: RealTdProps) => {
   //console.log("real td rendered");
   return (
     <td className={cardClass} onClick={onClickItem}>

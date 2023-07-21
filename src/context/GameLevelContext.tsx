@@ -5,6 +5,7 @@ import {
   useContext,
   useReducer,
   useEffect,
+  Dispatch,
   FC,
   useMemo,
   useCallback,
@@ -16,13 +17,20 @@ import { SET_LEVEL,SHUFFLE_BOARD,CLICK_CARD,MATCH_CARD,INIT_CARD,row,col,cardObj
 interface Context{
   level: [row,col],
   cardArr: cardObjState[],
-  boardArr: null | cardState[][],
+  boardArr: cardState[][],
+  dispatch: Dispatch<ReducerActions>,
+  timeOff: boolean,
+  closeGame: () => void
 }
+
 export const GameLevelContext = createContext<Context>({
   level: [15,10],
   cardArr: [],
-  boardArr: null,
-});
+  boardArr: [],
+  dispatch: () => {},
+  timeOff: false,
+  closeGame: () => {}
+})
 
 
 
@@ -200,21 +208,19 @@ const reducer = (state = initialState, action:ReducerActions):ReducerState => {
   }
 };
 
-const GameLevelContextProvider = ({ children }:{children:React.ReactNode}) => {
+export const GameLevelContextProvider = ({ children }:{children:React.ReactNode}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [timeOff, setTimeOff] = useState(false);
   const { level, boardArr, cardArr } = state;
 
   const closeGame = useCallback(() => setTimeOff(true), []);
   const value = useMemo(
-    () => ({
-      boardArr,
+    () => ({boardArr,
       level,
       cardArr,
       timeOff,
       closeGame,
-      dispatch,
-    }),
+      dispatch}),
     [boardArr, level, cardArr, timeOff]
   );
 
@@ -225,7 +231,6 @@ const GameLevelContextProvider = ({ children }:{children:React.ReactNode}) => {
   );
 }
 
-export default GameLevelContextProvider;
 
 export function useGameLevelContext() {
   return useContext(GameLevelContext);
