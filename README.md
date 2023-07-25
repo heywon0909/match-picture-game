@@ -1,3 +1,8 @@
+<div align="center">
+  <img src="./assets/image/cardMatchingGame.jpg" width="640px">
+</div>
+
+
 # React 로 만든 미니게임 🕹
 
 ### 📌 프로젝트 계획 이유 
